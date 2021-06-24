@@ -6,53 +6,57 @@ int main()
     cin>>t;
     while(t>0)
     {
-  int n,k,temp=0,temp1=0,r,m=0,sum;
-  cin>>n;
-  cin>>k;
-  int arr[n];
-  int result[n];
-  for(int i=0;i<n;i++)
-  {
-    cin>>arr[i];
-  }
-  for(int i=0;i<n;i++)
-  {
-      result[i]=INT_MAX;
-  }
-  for(int i=n-1;i>=0;i--)
-  {
-    if(arr[i]%k==0)
+    long long int n;
+    long long int k;
+    long long int sum=0;
+    cin>>n;
+    cin>>k;
+    long long int arr[n];
+    for(int i=0;i<n;i++)
     {
-      continue;
+        cin>>arr[i];
     }
-    else
-    {   sum=0;
-        temp1=temp1+(arr[i]%k);
-        temp=temp+k-(arr[i]%k);
-        for(int j=0;j<i;j++)
+    long long int rem[n];
+    long long int need[n];
+    long long int result[n+1];
+    for(long long int i=0;i<n;i++)
+    {
+        rem[i]=arr[i]%k;
+        need[i]=k-rem[i];
+    }
+    for(long long int i=0;i<n;i++)
+    {
+        sum=sum+rem[i];
+    }
+    for(long long int i=0;i<n+1;i++)
+    {
+        result[i]=1000000000;
+    }
+    result[0]=sum;
+    long long int tr=sum;
+    long long int j=1;
+    long long int tn=0;
+    for(long long int i=n-1;i>=0;i--)
+    {
+        sum=sum-rem[i];
+        tn=tn+need[i];
+        if(sum>=tn)
         {
-            sum=sum+(arr[j]%k);
-        }
-        if(sum>=temp)
-        {
-            r=sum-temp;
+            result[j]=sum-tn;
+            j++;
         }
         else
         {
-            r=temp1+sum;
+            result[j]=tr;
+            break;
         }
-        result[m]=r;
-        m++;
     }
-  }
-//  for(int i=0;i<n;i++)
-  //{
-    //  cout<<result[i]<<"    ";
-  //}
-  int * ans;
-  ans=std::min_element(result+0,result+n);
-  cout<<*ans<<endl;
-  t--;
+    long long int * ans;
+    ans=std::min_element(result+0,result+(n+1));
+    
+    cout<<*ans<<endl;
+    t--;
 }
-return 0;
+    return 0;
 }
+
