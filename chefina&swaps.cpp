@@ -19,15 +19,6 @@ int main()
         }
         sort(arr,arr+n);
         sort(brr,brr+n);
-        bool flag=0;
-        for(long int i=0;i<n;i++)
-        {
-            if(arr[i]!=brr[i])
-            {
-                flag=1;
-                break;
-            }
-        }
         long int crr[2*n];
         for(long int i=0;i<2*n;i++)
         {
@@ -41,27 +32,20 @@ int main()
             }
         }
         bool f=0;
+        map<int,int> ob;
         for(long int i=0;i<2*n;i++)
         {
-            long int count=0;
-            for(long int j=0;j<2*n;j++)
-            {
-                if(crr[i]==crr[j])
-                {
-                    count++;
-                }
-            }
-            if(count%2!=0)
+            ob[crr[i]]++;
+        }
+        for(long int i=0;i<2*n;i++)
+        {
+            if(ob[crr[i]]%2!=0)
             {
                 f=1;
                 break;
             }
         }
-        if(flag==0)
-        {
-            cout<<"0"<<endl;
-        }
-        else if(f==1)
+        if(f==1)
         {
             cout<<"-1"<<endl;
         }
@@ -76,103 +60,97 @@ int main()
             {
                 b[i]=0;
             }
-            vector <long int> v1(1);
+            vector <long int> v1(0);
             //vector <long int> v2(1);
+            
+            map <int,int> ob1,ob2,ob3,ob4;
             for(long int i=0;i<n;i++)
             {
-                long int l=0,r=0,p=0;
-                if(a[i]==0)
+                ob1[arr[i]]++;
+            }
+            for(long int i=0;i<n;i++)
+            {
+                ob2[brr[i]]++;
+            }
+            
+            for(long int i=0;i<n;i++)
+            {
+                long int p=0;
+                if(i!=0 && arr[i]==arr[i-1])
                 {
-                for(long int j=0;j<n;j++)
-                {
-                        if(arr[i]==arr[j])
-                        {
-                            a[j]=1;
-                            l++;
-                        }
+                    continue;
                 }
-
-                for(long int j=0;j<n;j++)
-                {
-
-                        if(arr[i]==brr[j])
-                        {
-                            r++;
-                        }
-                }
-                if(l==r)
+                
+                if(ob1[arr[i]]==ob2[arr[i]])
                 {
                     continue;
                 }
                 else
                 {
-                    if(l>r)
+                    if(ob1[arr[i]]>ob2[arr[i]])
                     {
-                        p=(l-r)/2;
-                    }
-                    while(p!=0)
-                    {
-                        v1.push_back(arr[i]);
-                        p--;
+                        p=(ob1[arr[i]]-ob2[arr[i]])/2;
+                         while(p!=0)
+                        {
+                            v1.push_back(arr[i]);
+                            p--;
+                        }
                     }
                 }
-                }
-
             }
-            /////
-            vector <long int> v2(1);
+             vector <long int> v2(0);
             for(long int i=n-1;i>=0;i--)
             {
-                long int l=0,r=0,p=0;
-                if(b[i]==0)
+                long int p=0;
+                if(i!=n-1 && brr[i]==brr[i+1])
                 {
-                for(long int j=0;j<n;j++)
-                {
-                        if(brr[i]==jrr[j])
-                        {
-                            b[j]=1;
-                            l++;
-                        }
+                    continue;
                 }
-
-                for(long int j=0;j<n;j++)
-                {
-
-                        if(brr[i]==arr[j])
-                        {
-                            r++;
-                        }
-                }
-                if(l==r)
+                
+                if(ob2[brr[i]]==ob1[brr[i]])
                 {
                     continue;
                 }
                 else
                 {
-                    if(l>r)
+                    if(ob2[brr[i]]>ob1[brr[i]])
                     {
-                        p=(l-r)/2;
-                    }
-                    while(p!=0)
-                    {
-                        v2.push_back(arr[i]);
-                        p--;
+                        p=(ob2[brr[i]]-ob1[brr[i]])/2;
+                         while(p!=0)
+                        {
+                            v2.push_back(brr[i]);
+                            p--;
+                        }
                     }
                 }
-                }
-
             }
             long int size=v1.size();
+            long int min;
+            min=*min_element(crr,crr+(2*n));
             long int c=0;
             for(long int i=0;i<size;i++)
             {
                 if(v1[i]>v2[i])
                 {
-                    c=c+v2[i];
+                    if(2*min<v2[i])
+                    {
+                        c=c+(2*min);
+                    }
+                    else
+                    {
+                        c=c+v2[i];   
+                    }
                 }
                 else
                 {
-                    c=c+v1[i];
+                    if(2*min<v1[i])
+                    {
+                        c=c+(2*min);
+                    }
+                    else
+                    {
+                        c=c+v1[i];   
+                    }
                 }
             }
             cout<<c<<endl;
